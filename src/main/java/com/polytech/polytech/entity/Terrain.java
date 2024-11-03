@@ -29,8 +29,8 @@ public class Terrain {
     @Column(name="point_geo")
     private String point_geo;
 
-    @OneToMany(mappedBy = "terrain")
-    Set<Reservation> Reservations;
+    //@OneToMany(mappedBy = "terrain")
+    //Set<Reservation> Reservations;
 
 
     public Terrain() {
@@ -77,11 +77,11 @@ public class Terrain {
         this.point_geo = point_geo;
     }
 
-    public Set<Reservation> getReservations() {
-        return Reservations;
-    }
+    /*public Set<Reservation> getReservations() {
+        //return Reservations;
+    }*/
 
-    public void setReservations(Set<Reservation> reservations) {
+    /*public void setReservations(Set<Reservation> reservations) {
         Reservations = reservations;
-    }
+    }*/
 }

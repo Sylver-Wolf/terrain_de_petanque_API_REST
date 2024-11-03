@@ -35,8 +35,8 @@ public class Utilisateur {
     @Column(name = "username")
     private String username;
 
-    @OneToMany(mappedBy = "utilisateur")
-    Set<Reservation> Reservations;
+    //@OneToMany(mappedBy = "utilisateur")
+    //Set<Reservation> Reservations;
 
     public Utilisateur() {
 
@@ -82,13 +82,13 @@ public class Utilisateur {
         this.username = username;
     }
 
-    public Set<Reservation> getReservations() {
+    /*public Set<Reservation> getReservations() {
         return Reservations;
     }
 
     public void setReservations(Set<Reservation> reservations) {
         Reservations = reservations;
-    }
+    }*/
 
     public String getPassword() {
         return password;
