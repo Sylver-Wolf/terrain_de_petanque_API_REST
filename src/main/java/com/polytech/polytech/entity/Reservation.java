@@ -15,15 +15,15 @@ public class Reservation {
     @EmbeddedId
     private ReservationKey id;
 
-    //@ManyToOne
+    @ManyToOne
     //@MapsId("utilisateurId" )
-    //@JoinColumn(name="utilisateur_id")
-    //private com.polytech.polytech.entity.Utilisateur Utilisateur;
+    @JoinColumn(name="utilisateur_id", insertable = false, updatable = false)
+    private com.polytech.polytech.entity.Utilisateur Utilisateur;
 
-    //@ManyToOne
+    @ManyToOne
     //@MapsId("terrainId" )
-    //@Column(name="terrain_id")
-    //private com.polytech.polytech.entity.Terrain Terrain;
+    @JoinColumn(name="terrain_id", insertable = false, updatable = false)
+    private com.polytech.polytech.entity.Terrain Terrain;
 
     private int reservation;
 
