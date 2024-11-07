@@ -1,11 +1,15 @@
 package com.polytech.polytech.controller;
 
+import com.polytech.polytech.service.UtilisateurService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.polytech.polytech.entity.Utilisateur;
 
 @RestController
 @RequestMapping("")
 public class UserController {
+    @Autowired
+    private UtilisateurService utilisateurService;
 
     @PostMapping("/CreateUser")
     public Utilisateur CreateUser(@RequestBody Utilisateur user) {
@@ -17,4 +21,7 @@ public class UserController {
         createdUser.setMail(user.getMail());
         return createdUser;
     }
+
+
+
 }
