@@ -12,11 +12,11 @@ import java.util.List;
 @RestController
 @RequestMapping("")
 public class TerrainController {
-    @Autowired
+    //@Autowired
     private TerrainService terrainService;
 
     @GetMapping
-    public List<Terrain> getAllTerrain() {
+    public List<Terrain> getAllTerrains() {
         return terrainService.getAllTerrains();
     }
 
@@ -32,17 +32,17 @@ public class TerrainController {
     }
 
     @GetMapping("/{id}")
-    public Terrain getAuteurById(@PathVariable Long id) {
+    public Terrain getTerrainById(@PathVariable Integer id) {
         return terrainService.getTerrainById(id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAuteur(@PathVariable Long id) {
+    public void deleteTerrain(@PathVariable Integer id) {
         terrainService.deleteTerrain(id);
     }
 
     @PutMapping("/{id}")
-    public Terrain updateTerrain(@PathVariable Long id, @RequestBody Terrain updatedTerrain) {
+    public Terrain updateTerrain(@PathVariable Integer id, @RequestBody Terrain updatedTerrain) {
         return terrainService.updateTerrain(id, updatedTerrain);
     }
 }
