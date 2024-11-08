@@ -14,7 +14,7 @@ public class UserController {
     //@Autowired
     private UtilisateurService userService;
 
-    @PostMapping("/CreateUser")
+    @PostMapping
     public Utilisateur CreateUser(@RequestBody Utilisateur user) {
         Utilisateur createdUser = new Utilisateur();
         createdUser.setNom(user.getNom());

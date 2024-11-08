@@ -8,6 +8,7 @@ import java.util.Set;
 
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 public class TerrainDTO {
