@@ -1,5 +1,4 @@
 package com.polytech.polytech.service;
-
 import com.polytech.polytech.entity.Utilisateur;
 import com.polytech.polytech.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ public class UtilisateurService {
         return userRepository.findAll();
     }
 
-    public Utilisateur saveUser(Utilisateur user) {
+    public Utilisateur createUser(Utilisateur user) {
         return userRepository.save(user);
     }
 

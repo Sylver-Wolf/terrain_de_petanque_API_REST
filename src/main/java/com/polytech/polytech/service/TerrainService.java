@@ -18,7 +18,7 @@ public class TerrainService {
         return terrainRepository.findById(id).orElse(null);
     }
 
-    public Terrain saveTerrain(Terrain terrain) {
+    public Terrain createTerrain(Terrain terrain) {
         return terrainRepository.save(terrain);
     }
 
