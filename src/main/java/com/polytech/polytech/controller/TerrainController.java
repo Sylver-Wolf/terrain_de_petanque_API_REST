@@ -1,48 +1,51 @@
 package com.polytech.polytech.controller;
 
 
+import com.polytech.polytech.DTO.TerrainDTO;
 import com.polytech.polytech.entity.Terrain;
+import com.polytech.polytech.mapper.TerrainMapper;
 import com.polytech.polytech.service.TerrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/api/terrain")
 public class TerrainController {
     //@Autowired
     private TerrainService terrainService;
+    private TerrainMapper terrainMapper;
 
     @GetMapping
-    public List<Terrain> getAllTerrains() {
-        return terrainService.getAllTerrains();
+    public List<TerrainDTO> getAllTerrains() {
+        List<Terrain> listOfTerrain = this.terrainService.getAllTerrains();
+        List<TerrainDTO> listOfTerrainDTO = new ArrayList<>();
+        for (Terrain t : listOfTerrain) {
+            listOfTerrainDTO.add(this.terrainMapper.toDTO(t));
+        }
+        return listOfTerrainDTO;
     }
 
     @PostMapping
-    public Terrain createTerrain(@RequestBody Terrain terrain) {
-        Terrain createdTerrain = new Terrain();
-        createdTerrain.setDescription(terrain.getDescription());
-        createdTerrain.setId(terrain.getId());
-        createdTerrain.setNom(terrain.getNom());
-        createdTerrain.setQuantite(terrain.getQuantite());
-        createdTerrain.setPoint_geo(terrain.getPoint_geo());
-        return createdTerrain;
+    public Terrain createTerrain(@RequestBody TerrainDTO terrainDTO) {
+        return this.terrainService.saveTerrain(this.terrainMapper.toEntity(terrainDTO));
     }
 
     @GetMapping("/{id}")
-    public Terrain getTerrainById(@PathVariable Integer id) {
-        return terrainService.getTerrainById(id);
+    public TerrainDTO getTerrainById(@PathVariable Integer id) {
+        return this.terrainMapper.toDTO(this.terrainService.getTerrainById(id));
     }
 
     @DeleteMapping("/{id}")
     public void deleteTerrain(@PathVariable Integer id) {
-        terrainService.deleteTerrain(id);
+        this.terrainService.deleteTerrain(id);
     }
 
     @PutMapping("/{id}")
-    public Terrain updateTerrain(@PathVariable Integer id, @RequestBody Terrain updatedTerrain) {
-        return terrainService.updateTerrain(id, updatedTerrain);
+    public Terrain updateTerrain(@PathVariable Integer id, @RequestBody TerrainDTO updatedTerrainDTO) {
+        return terrainService.updateTerrain(id, terrainMapper.toEntity(updatedTerrainDTO));
     }
 }

@@ -9,7 +9,7 @@ import com.polytech.polytech.entity.Utilisateur;
 import java.util.List;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/api/user")
 public class UserController {
     //@Autowired
     private UtilisateurService userService;
