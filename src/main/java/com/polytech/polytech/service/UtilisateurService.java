@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+//@Autowired
 public class UtilisateurService {
-    @Autowired
+
     private UserRepository userRepository;
 
     public List<Utilisateur> getAllUsers() {
@@ -37,5 +38,9 @@ public class UtilisateurService {
             return userRepository.save(existingUser);
         }
         return null;
+    }
+
+    public Utilisateur createUser(Utilisateur newUser) {
+        return userRepository.save(newUser);
     }
 }

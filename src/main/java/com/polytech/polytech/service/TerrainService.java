@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public class TerrainService {
-
-    @Autowired
+    //@Autowired
     private TerrainRepository terrainRepository;
 
     public List<Terrain> getAllTerrains() {
