@@ -31,7 +31,7 @@ public class TerrainController {
 
     @PostMapping
     public Terrain createTerrain(@RequestBody TerrainDTO terrainDTO) {
-        return this.terrainService.saveTerrain(this.terrainMapper.toEntity(terrainDTO));
+        return this.terrainService.createTerrain(this.terrainMapper.toEntity(terrainDTO));
     }
 
     @GetMapping("/{id}")
