@@ -38,4 +38,8 @@ public class UtilisateurService {
         }
         return null;
     }
+
+    public Utilisateur createUser(Utilisateur newUser) {
+        return userRepository.save(newUser);
+    }
 }
