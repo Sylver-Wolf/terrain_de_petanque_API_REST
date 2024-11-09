@@ -2,15 +2,29 @@ package com.polytech.polytech.mapper;
 
 import com.polytech.polytech.DTO.UtilisateurDTO;
 import com.polytech.polytech.entity.Utilisateur;
-import org.apache.logging.log4j.CloseableThreadContext;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import org.springframework.web.bind.annotation.Mapping;
 
-
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UtilisateurMapper {
+
+    UtilisateurMapper instanceUserMapper = Mappers.getMapper(UtilisateurMapper.class);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "nom", target = "nom")
+    @Mapping(source = "prenom", target = "prenom")
+    @Mapping(source = "mail", target = "mail")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "username", target = "username")
     Utilisateur toEntity(UtilisateurDTO User);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "nom", target = "nom")
+    @Mapping(source = "prenom", target = "prenom")
+    @Mapping(source = "mail", target = "mail")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "username", target = "username")
     UtilisateurDTO toDTO(Utilisateur User);
 }
 
