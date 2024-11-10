@@ -9,8 +9,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface UtilisateurMapper {
 
-    UtilisateurMapper instanceUserMapper = Mappers.getMapper(UtilisateurMapper.class);
-
     @Mapping(source = "id", target = "id")
     @Mapping(source = "nom", target = "nom")
     @Mapping(source = "prenom", target = "prenom")

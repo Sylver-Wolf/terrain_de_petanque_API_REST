@@ -5,12 +5,9 @@ import com.polytech.polytech.DTO.TerrainDTO;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface TerrainMapper {
-
-    TerrainMapper instanceTerrainMapper = Mappers.getMapper(TerrainMapper.class);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "nom", target = "nom")
