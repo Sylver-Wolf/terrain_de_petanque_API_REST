@@ -13,7 +13,7 @@ import java.util.Set;
 @ToString
 public class TerrainDTO {
 
-    private Long id;
+    private Integer id;
     private String nom;
     private int quantite;
     private String description;

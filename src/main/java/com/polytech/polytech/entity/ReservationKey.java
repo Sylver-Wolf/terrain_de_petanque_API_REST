@@ -9,9 +9,9 @@ import java.io.Serializable;
 public class ReservationKey implements Serializable {
 
     @Column(name="utilisateur_id")
-    private int utilisateur_id;
+    private Integer utilisateur_id;
 
     @Column(name="terrain_id")
-    private int terrain_id;
+    private Integer terrain_id;
 
 }

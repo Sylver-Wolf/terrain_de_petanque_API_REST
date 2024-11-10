@@ -19,7 +19,7 @@ public class Utilisateur {
     @Id
     @GeneratedValue
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "nom")
     private String nom;

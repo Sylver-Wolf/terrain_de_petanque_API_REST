@@ -1,6 +1,7 @@
 package com.polytech.polytech.service;
 
 import com.polytech.polytech.entity.Utilisateur;
+import com.polytech.polytech.exception.UserNotFoundException;
 import com.polytech.polytech.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,10 @@ public class UtilisateurService {
     public List<Utilisateur> getAllUsers() {
         return userRepository.findAll();
     }
-
-    public Utilisateur saveUser(Utilisateur user) {
-        return userRepository.save(user);
-    }
+    
 
     public Utilisateur getUserById(Integer id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     public void deleteUser(Integer id) {
