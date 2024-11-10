@@ -11,7 +11,9 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class UtilisateurDTO {
 
     private Long id;
@@ -28,9 +30,6 @@ public class UtilisateurDTO {
 
     Set<Reservation> Reservations;
 
-    public UtilisateurDTO() {
-
-    }
 }
 
 

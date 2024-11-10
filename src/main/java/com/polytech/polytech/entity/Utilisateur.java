@@ -11,6 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @ToString
 @Table(name = "utilisateur")
 public class Utilisateur {
@@ -35,8 +36,8 @@ public class Utilisateur {
     @Column(name = "username")
     private String username;
 
-    //@OneToMany(mappedBy = "utilisateur")
-    //Set<Reservation> Reservations;
+    @OneToMany(mappedBy = "utilisateur")
+    Set<Reservation> Reservations;
 
 }
 

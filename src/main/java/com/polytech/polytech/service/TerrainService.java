@@ -3,12 +3,18 @@ package com.polytech.polytech.service;
 import com.polytech.polytech.entity.Terrain;
 import com.polytech.polytech.repository.TerrainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TerrainService {
-    //@Autowired
+    @Autowired
     private TerrainRepository terrainRepository;
+
+    public TerrainService(TerrainRepository terrainRepository) {
+        this.terrainRepository = terrainRepository;
+    }
 
     public List<Terrain> getAllTerrains() {
         return terrainRepository.findAll();

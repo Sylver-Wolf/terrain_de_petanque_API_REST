@@ -1,40 +1,36 @@
 package com.polytech.polytech.service;
+
 import com.polytech.polytech.entity.Utilisateur;
-import com.polytech.polytech.exception.NoUserInListException;
-import com.polytech.polytech.exception.UserNotFoundException;
 import com.polytech.polytech.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-//@Autowired
+@Service
 public class UtilisateurService {
 
+    @Autowired
     private UserRepository userRepository;
 
-    public List<Utilisateur> getAllUsers() {
-        if(userRepository.findAll().isEmpty()) {
-            throw (new NoUserInListException());
-        } else {
-            return userRepository.findAll();
-        }
+    public UtilisateurService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
+    public List<Utilisateur> getAllUsers() {
+        return userRepository.findAll();
+    }
 
-    public Utilisateur createUser(Utilisateur user) {
+    public Utilisateur saveUser(Utilisateur user) {
         return userRepository.save(user);
     }
 
     public Utilisateur getUserById(Integer id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userRepository.findById(id).orElse(null);
     }
 
     public void deleteUser(Integer id) {
-        if(userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
-        } else {
-            throw (new UserNotFoundException());
-        }
+        userRepository.deleteById(id);
     }
 
     public Utilisateur updateUser(Integer id, Utilisateur updatedUser) {
@@ -48,5 +44,9 @@ public class UtilisateurService {
             return userRepository.save(existingUser);
         }
         return null;
+    }
+
+    public Utilisateur createUser(Utilisateur newUser) {
+        return userRepository.save(newUser);
     }
 }

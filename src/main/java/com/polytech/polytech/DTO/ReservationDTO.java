@@ -1,6 +1,7 @@
 package com.polytech.polytech.DTO;
 
 import com.polytech.polytech.entity.ReservationKey;
+import com.polytech.polytech.entity.*;
 import lombok.*;
 
 @Builder
@@ -12,9 +13,9 @@ public class ReservationDTO {
 
     private ReservationKey id;
 
-    private com.polytech.polytech.entity.Utilisateur Utilisateur;
+    private Utilisateur Utilisateur;
 
-    private com.polytech.polytech.entity.Terrain Terrain;
+    private Terrain Terrain;
 
     private int reservation;
 

@@ -2,6 +2,7 @@ package com.polytech.polytech.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.polytech.polytech.entity.*;
 
 @Entity
 @Builder
@@ -17,13 +18,13 @@ public class Reservation {
 
     @ManyToOne
     //@MapsId("utilisateurId" )
-    @JoinColumn(name="utilisateur_id", insertable = false, updatable = false)
-    private com.polytech.polytech.entity.Utilisateur Utilisateur;
+    @JoinColumn(name="utilisateur", insertable = false, updatable = false)
+    private Utilisateur utilisateur;
 
     @ManyToOne
     //@MapsId("terrainId" )
-    @JoinColumn(name="terrain_id", insertable = false, updatable = false)
-    private com.polytech.polytech.entity.Terrain Terrain;
+    @JoinColumn(name="terrain", insertable = false, updatable = false)
+    private Terrain terrain;
 
     private int reservation;
 

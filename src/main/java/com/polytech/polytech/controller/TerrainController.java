@@ -15,9 +15,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/terrain")
 public class TerrainController {
-    //@Autowired
+
+    @Autowired
     private TerrainService terrainService;
+
+    @Autowired
     private TerrainMapper terrainMapper;
+
+    public TerrainController(TerrainService terrainService, TerrainMapper terrainMapper) {
+        this.terrainService = terrainService;
+        this.terrainMapper = terrainMapper;
+    }
 
     @GetMapping
     public List<TerrainDTO> getAllTerrains() {
@@ -46,6 +54,7 @@ public class TerrainController {
 
     @PutMapping("/{id}")
     public Terrain updateTerrain(@PathVariable Integer id, @RequestBody TerrainDTO updatedTerrainDTO) {
-        return terrainService.updateTerrain(id, terrainMapper.toEntity(updatedTerrainDTO));
+        return terrainService.updateTerrain(id, this.terrainMapper.toEntity(updatedTerrainDTO));
     }
+
 }
