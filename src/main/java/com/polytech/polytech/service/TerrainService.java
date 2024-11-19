@@ -30,13 +30,7 @@ public class TerrainService {
     }
 
     public Terrain createTerrain(Terrain terrain) {
-        if (terrainRepository.existsById(terrain.getId())) {
-            //terrain deja existant
-            //on retourne le terrain qui existe deja ou une erreur?
-            return terrain;
-        }
-        else {return terrainRepository.save(terrain);}
-
+        return terrainRepository.save(terrain);
     }
 
     public void deleteTerrain(Integer id) {
@@ -48,8 +42,8 @@ public class TerrainService {
     }
 
     public Terrain updateTerrain(Integer id, Terrain updatedTerrain) {
-        Terrain existingTerrain = getTerrainById(id);
-        if(existingTerrain != null) {
+        if(terrainRepository.existsById(id)) {
+            Terrain existingTerrain = getTerrainById(id);
             existingTerrain.setNom(updatedTerrain.getNom());
             existingTerrain.setDescription(updatedTerrain.getDescription());
             existingTerrain.setQuantite(updatedTerrain.getQuantite());
