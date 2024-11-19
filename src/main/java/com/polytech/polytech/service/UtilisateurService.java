@@ -21,7 +21,7 @@ public class UtilisateurService {
     public List<Utilisateur> getAllUsers() {
         return userRepository.findAll();
     }
-    
+
 
     public Utilisateur getUserById(Integer id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);

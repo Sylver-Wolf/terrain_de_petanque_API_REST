@@ -56,8 +56,6 @@ public class TerrainService {
             existingTerrain.setPoint_geo(updatedTerrain.getPoint_geo());
             return terrainRepository.save(existingTerrain);
         }
-        //Si le terrain existe pas on créer un nouveau terrain ?
-        //On renvoie une exception?
-        else {return terrainRepository.save(updatedTerrain);}
+        else {throw new TerrainNotFoundException();}
     }
 }
