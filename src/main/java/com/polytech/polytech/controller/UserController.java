@@ -7,7 +7,6 @@ import com.polytech.polytech.mapper.UtilisateurMapper;
 import com.polytech.polytech.service.UtilisateurService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +35,9 @@ public class UserController {
 
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<UtilisateurDTO> createUser(@RequestBody UtilisateurDTO userDTO) {
-        return ResponseEntity.ok(this.userMapper.toDTO(this.userService.createUser(
-                this.userMapper.toEntity(userDTO))));
-
+    public ResponseEntity<UtilisateurDTO> createUser(@RequestBody() UtilisateurDTO userDTO) {
+        return ResponseEntity.ok(this.userMapper.toDTO(
+                this.userService.createUser(this.userMapper.toEntity(userDTO))));
     }
 
     @GetMapping
@@ -54,10 +52,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UtilisateurDTO getUserById(@PathVariable Integer id) {
-        //if(this.userService.existingID()){
             return userMapper.toDTO(this.userService.getUserById(id));
-        //}
-        //return null;
     }
 
     @DeleteMapping("/{id}")
@@ -66,8 +61,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public Utilisateur updateUser(@PathVariable Integer id, @RequestBody UtilisateurDTO updatedUserDTO) {
-        return this.userService.updateUser(id, this.userMapper.toEntity(updatedUserDTO));
+    public ResponseEntity<UtilisateurDTO> updateUser(@PathVariable Integer id, @RequestBody UtilisateurDTO updatedUserDTO) {
+        return ResponseEntity.ok(this.userMapper.toDTO(this.userService.updateUser(id, this.userMapper.toEntity(updatedUserDTO))));
     }
 
 

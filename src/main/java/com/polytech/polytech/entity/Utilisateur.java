@@ -17,9 +17,9 @@ import java.util.Set;
 public class Utilisateur {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "nom")
     private String nom;

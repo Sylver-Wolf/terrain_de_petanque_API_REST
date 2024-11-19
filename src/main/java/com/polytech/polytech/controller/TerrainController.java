@@ -6,6 +6,7 @@ import com.polytech.polytech.entity.Terrain;
 import com.polytech.polytech.mapper.TerrainMapper;
 import com.polytech.polytech.service.TerrainService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -53,8 +54,9 @@ public class TerrainController {
     }
 
     @PutMapping("/{id}")
-    public Terrain updateTerrain(@PathVariable Integer id, @RequestBody TerrainDTO updatedTerrainDTO) {
-        return terrainService.updateTerrain(id, this.terrainMapper.toEntity(updatedTerrainDTO));
+    public ResponseEntity<TerrainDTO> updateTerrain(@PathVariable Integer id, @RequestBody TerrainDTO updatedTerrainDTO) {
+        return ResponseEntity.ok(this.terrainMapper.toDTO(
+                terrainService.updateTerrain(id, this.terrainMapper.toEntity(updatedTerrainDTO))));
     }
 
 }

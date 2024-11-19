@@ -26,7 +26,7 @@ public class Reservation {
     @JoinColumn(name="terrain", insertable = false, updatable = false)
     private Terrain terrain;
 
-    private int reservation;
+    private Integer reservation;
 
 
     public Reservation() {

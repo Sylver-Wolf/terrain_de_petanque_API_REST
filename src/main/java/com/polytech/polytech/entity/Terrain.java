@@ -10,13 +10,14 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @ToString
 @Table(name = "terrain")
 public class Terrain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name="nom")
     private String nom;
@@ -33,8 +34,4 @@ public class Terrain {
     @OneToMany(mappedBy = "terrain")
     Set<Reservation> Reservations;
 
-
-    public Terrain() {
-
-    }
 }
