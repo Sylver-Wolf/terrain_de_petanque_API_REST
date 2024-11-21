@@ -16,7 +16,7 @@ import java.util.Set;
 @EqualsAndHashCode
 public class UtilisateurDTO {
 
-    private Long id;
+    private Integer id;
 
     private String nom;
 

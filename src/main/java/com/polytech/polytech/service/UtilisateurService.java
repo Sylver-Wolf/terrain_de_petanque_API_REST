@@ -1,6 +1,7 @@
 package com.polytech.polytech.service;
-
 import com.polytech.polytech.entity.Utilisateur;
+import com.polytech.polytech.exception.NoUserInListException;
+import com.polytech.polytech.exception.UserNotFoundException;
 import com.polytech.polytech.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,44 +10,44 @@ import java.util.List;
 
 @Service
 public class UtilisateurService {
-
     @Autowired
     private UserRepository userRepository;
 
-    public UtilisateurService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     public List<Utilisateur> getAllUsers() {
-        return userRepository.findAll();
+        if(userRepository.findAll().isEmpty()) {
+            throw (new NoUserInListException());
+        } else {
+            return userRepository.findAll();
+        }
     }
 
-    public Utilisateur saveUser(Utilisateur user) {
+    public Utilisateur createUser(Utilisateur user) {
         return userRepository.save(user);
     }
 
     public Utilisateur getUserById(Integer id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     public void deleteUser(Integer id) {
-        userRepository.deleteById(id);
+        if(userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+        } else {
+            throw (new UserNotFoundException());
+        }
     }
 
     public Utilisateur updateUser(Integer id, Utilisateur updatedUser) {
-        Utilisateur existingUser = getUserById(id);
-        if(existingUser != null) {
+        if(userRepository.findById(id).isPresent()) {
+            Utilisateur existingUser = getUserById(id);
             existingUser.setNom(updatedUser.getNom());
             existingUser.setPrenom(updatedUser.getPrenom());
             existingUser.setMail(updatedUser.getMail());
             existingUser.setUsername(updatedUser.getUsername());
             existingUser.setPassword(updatedUser.getPassword());
             return userRepository.save(existingUser);
+        } else {
+            throw (new UserNotFoundException());
         }
-        return null;
-    }
-
-    public Utilisateur createUser(Utilisateur newUser) {
-        return userRepository.save(newUser);
     }
 }

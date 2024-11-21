@@ -1,6 +1,8 @@
 package com.polytech.polytech.service;
 
 import com.polytech.polytech.entity.Terrain;
+import com.polytech.polytech.exception.NoTerrainInListException;
+import com.polytech.polytech.exception.TerrainNotFoundException;
 import com.polytech.polytech.repository.TerrainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,14 @@ public class TerrainService {
     }
 
     public List<Terrain> getAllTerrains() {
-        return terrainRepository.findAll();
+        if (terrainRepository.findAll().isEmpty()) {
+            throw new NoTerrainInListException();
+        }
+        else {return terrainRepository.findAll();}
     }
 
     public Terrain getTerrainById(Integer id) {
-        return terrainRepository.findById(id).orElse(null);
+        return terrainRepository.findById(id).orElseThrow(TerrainNotFoundException::new);
     }
 
     public Terrain createTerrain(Terrain terrain) {
@@ -29,18 +34,22 @@ public class TerrainService {
     }
 
     public void deleteTerrain(Integer id) {
-        terrainRepository.deleteById(id);
+        if (!terrainRepository.existsById(id)) {
+            throw new TerrainNotFoundException();
+        }
+        else {
+        terrainRepository.deleteById(id);}
     }
 
     public Terrain updateTerrain(Integer id, Terrain updatedTerrain) {
-        Terrain existingTerrain = getTerrainById(id);
-        if(existingTerrain != null) {
+        if(terrainRepository.existsById(id)) {
+            Terrain existingTerrain = getTerrainById(id);
             existingTerrain.setNom(updatedTerrain.getNom());
             existingTerrain.setDescription(updatedTerrain.getDescription());
             existingTerrain.setQuantite(updatedTerrain.getQuantite());
             existingTerrain.setPoint_geo(updatedTerrain.getPoint_geo());
             return terrainRepository.save(existingTerrain);
         }
-        return null;
+        else {throw new TerrainNotFoundException();}
     }
 }

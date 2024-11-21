@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PolytechApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PolytechApplication.class, args);
+		try{
+			SpringApplication.run(PolytechApplication.class, args);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
-
 }
