@@ -2,7 +2,9 @@ package com.polytech.polytech.controller;
 
 
 import com.polytech.polytech.DTO.TerrainDTO;
+import com.polytech.polytech.DTO.UtilisateurDTO;
 import com.polytech.polytech.entity.Terrain;
+import com.polytech.polytech.entity.Utilisateur;
 import com.polytech.polytech.mapper.TerrainMapper;
 import com.polytech.polytech.service.TerrainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,4 +61,22 @@ public class TerrainController {
                 terrainService.updateTerrain(id, this.terrainMapper.toEntity(updatedTerrainDTO))));
     }
 
+
+    //Autres méthodes
+
+    /*
+    @GetMapping("/{name}")
+    public List<TerrainDTO> getTerrainByName(@PathVariable String name) {
+        List<TerrainDTO> newTerrainDTO = new ArrayList<>();
+        List<Terrain> terrainList = this.terrainService.getTerrainByName(name);
+        for(Terrain u : terrainList) {
+            newTerrainDTO.add(this.terrainMapper.toDTO(u));
+        }
+        return newTerrainDTO;
+    }
+
+
+     */
 }
+
+

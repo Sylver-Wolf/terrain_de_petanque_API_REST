@@ -1,4 +1,5 @@
 package com.polytech.polytech.service;
+import com.polytech.polytech.entity.Terrain;
 import com.polytech.polytech.entity.Utilisateur;
 import com.polytech.polytech.exception.NoUserInListException;
 import com.polytech.polytech.exception.UserNotFoundException;
@@ -28,6 +29,14 @@ public class UtilisateurService {
     public Utilisateur getUserById(Integer id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
+
+    public Utilisateur getUserByName(String name) {
+        if(userRepository.findAll().isEmpty()) {
+            throw (new NoUserInListException());
+        }
+        else return userRepository.findByName(name);
+        }
+
 
     public void deleteUser(Integer id) {
         if(userRepository.findById(id).isPresent()) {

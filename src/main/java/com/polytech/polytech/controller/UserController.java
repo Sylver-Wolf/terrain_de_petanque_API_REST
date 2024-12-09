@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
+//@Slf4j
+
 @RestController
 @RequestMapping("/api/utilisateur")
 public class UserController {
@@ -33,7 +34,7 @@ public class UserController {
         this.userMapper = userMapperParam;
     }
 
-
+    //Partie CRUD
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UtilisateurDTO> createUser(@RequestBody() UtilisateurDTO userDTO) {
         return ResponseEntity.ok(this.userMapper.toDTO(
@@ -50,9 +51,16 @@ public class UserController {
         return listOfUserDTO;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/userID/{id}")
     public UtilisateurDTO getUserById(@PathVariable Integer id) {
             return userMapper.toDTO(this.userService.getUserById(id));
+    }
+
+    @GetMapping("/username/{nom}")
+    public ResponseEntity<UtilisateurDTO> getUserByNom(@PathVariable String nom) {
+        return ResponseEntity.ok(
+                userMapper.toDTO(
+                        this.userService.getUserByName(nom)));
     }
 
     @DeleteMapping("/{id}")
@@ -67,6 +75,7 @@ public class UserController {
 
 
 
+    //Méthodes supplémentaire
 
 
 

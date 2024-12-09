@@ -1,7 +1,9 @@
 package com.polytech.polytech.service;
 
 import com.polytech.polytech.entity.Terrain;
+import com.polytech.polytech.entity.Utilisateur;
 import com.polytech.polytech.exception.NoTerrainInListException;
+import com.polytech.polytech.exception.NoUserInListException;
 import com.polytech.polytech.exception.TerrainNotFoundException;
 import com.polytech.polytech.repository.TerrainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,21 @@ public class TerrainService {
 
     public Terrain getTerrainById(Integer id) {
         return terrainRepository.findById(id).orElseThrow(TerrainNotFoundException::new);
+    }
+
+    public List<Terrain> getTerrainByName(String name) {
+        if(terrainRepository.findAll().isEmpty()) {
+            throw (new NoUserInListException());
+        }
+        else {
+            List<Terrain> tempListTerrain = terrainRepository.findAll();
+            for(int iter = 0; iter < tempListTerrain.size(); iter++) {
+                if(!tempListTerrain.get(iter).getNom().equals(name)) {
+                    tempListTerrain.remove(iter);
+                }
+            }
+            return tempListTerrain;
+        }
     }
 
     public Terrain createTerrain(Terrain terrain) {
