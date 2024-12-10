@@ -1,11 +1,17 @@
 package com.polytech.polytech.controller;
 
 
+import com.polytech.polytech.DTO.ReservationDTO;
+import com.polytech.polytech.DTO.ReservationKeyDTO;
 import com.polytech.polytech.DTO.UtilisateurDTO;
+import com.polytech.polytech.entity.Reservation;
 import com.polytech.polytech.entity.Utilisateur;
+import com.polytech.polytech.mapper.ReservationMapper;
 import com.polytech.polytech.mapper.UtilisateurMapper;
+import com.polytech.polytech.service.ReservationService;
 import com.polytech.polytech.service.UtilisateurService;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +33,12 @@ public class UserController {
     @Autowired
     private UtilisateurMapper userMapper;
 
+    @Autowired
+    private ReservationMapper reservationMapper;
+
+    @Autowired
+    private ReservationService reservationService;
+
 
     //Constructeur
     public UserController(UtilisateurService userServiceParam, UtilisateurMapper userMapperParam) {
@@ -35,7 +47,7 @@ public class UserController {
     }
 
     //Partie CRUD
-    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value="/create" ,produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UtilisateurDTO> createUser(@RequestBody() UtilisateurDTO userDTO) {
         return ResponseEntity.ok(this.userMapper.toDTO(
                 this.userService.createUser(this.userMapper.toEntity(userDTO))));
@@ -56,13 +68,6 @@ public class UserController {
             return userMapper.toDTO(this.userService.getUserById(id));
     }
 
-    @GetMapping("/username/{nom}")
-    public ResponseEntity<UtilisateurDTO> getUserByNom(@PathVariable String nom) {
-        return ResponseEntity.ok(
-                userMapper.toDTO(
-                        this.userService.getUserByName(nom)));
-    }
-
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Integer id) {
         this.userService.deleteUser(id);
@@ -76,10 +81,17 @@ public class UserController {
 
 
     //Méthodes supplémentaire
+    @GetMapping("/username/{nom}")
+    public ResponseEntity<UtilisateurDTO> getUserByNom(@PathVariable String nom) {
+        return ResponseEntity.ok(
+                userMapper.toDTO(
+                        this.userService.getUserByName(nom)));
+    }
 
-
-
-
-
-
+    @PostMapping(value = "/reserver", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ReservationDTO> createReservation(@RequestBody ReservationKeyDTO reservParam) {
+        return ResponseEntity.ok(this.reservationMapper.toDTO(
+                this.reservationService.reserverTerrain(this.reservationMapper.toKeyEntity(reservParam)))
+        );
+    }
 }

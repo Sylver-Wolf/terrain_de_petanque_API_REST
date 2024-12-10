@@ -31,21 +31,6 @@ public class TerrainService {
         return terrainRepository.findById(id).orElseThrow(TerrainNotFoundException::new);
     }
 
-    public List<Terrain> getTerrainByName(String name) {
-        if(terrainRepository.findAll().isEmpty()) {
-            throw (new NoUserInListException());
-        }
-        else {
-            List<Terrain> tempListTerrain = terrainRepository.findAll();
-            for(int iter = 0; iter < tempListTerrain.size(); iter++) {
-                if(!tempListTerrain.get(iter).getNom().equals(name)) {
-                    tempListTerrain.remove(iter);
-                }
-            }
-            return tempListTerrain;
-        }
-    }
-
     public Terrain createTerrain(Terrain terrain) {
         return terrainRepository.save(terrain);
     }
@@ -69,4 +54,18 @@ public class TerrainService {
         }
         else {throw new TerrainNotFoundException();}
     }
+
+    //Other methods
+
+    public List<Terrain> getTerrainByName(String name) {
+        if(terrainRepository.findAll().isEmpty()) {
+            throw (new NoUserInListException());
+        }
+        else return terrainRepository.findByName(name).orElse(null);
+    }
+
+    
+
+
+
 }

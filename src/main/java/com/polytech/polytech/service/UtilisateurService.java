@@ -34,7 +34,7 @@ public class UtilisateurService {
         if(userRepository.findAll().isEmpty()) {
             throw (new NoUserInListException());
         }
-        else return userRepository.findByName(name);
+        else return userRepository.findByName(name).orElse(null);
         }
 
 
@@ -59,4 +59,6 @@ public class UtilisateurService {
             throw (new UserNotFoundException());
         }
     }
+
+    
 }

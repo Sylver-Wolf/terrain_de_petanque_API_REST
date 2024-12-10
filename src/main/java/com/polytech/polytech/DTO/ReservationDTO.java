@@ -4,10 +4,12 @@ import com.polytech.polytech.entity.ReservationKey;
 import com.polytech.polytech.entity.*;
 import lombok.*;
 
-@Builder
+
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@NoArgsConstructor
 @ToString
 public class ReservationDTO {
 
@@ -17,10 +19,5 @@ public class ReservationDTO {
 
     private Terrain Terrain;
 
-    private int reservation;
 
-
-    public ReservationDTO() {
-
-    }
 }

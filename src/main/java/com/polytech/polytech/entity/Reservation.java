@@ -11,25 +11,20 @@ import com.polytech.polytech.entity.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @Table(name = "reservation")
+@NoArgsConstructor
 public class Reservation {
 
     @EmbeddedId
     private ReservationKey id;
 
     @ManyToOne
-    //@MapsId("utilisateurId" )
-    @JoinColumn(name="utilisateur", insertable = false, updatable = false)
+    @MapsId("utilisateur_id" )
+    @JoinColumn(name="utilisateur_id", insertable = false, updatable = false)
     private Utilisateur utilisateur;
 
     @ManyToOne
-    //@MapsId("terrainId" )
-    @JoinColumn(name="terrain", insertable = false, updatable = false)
+    @MapsId("terrain_id" )
+    @JoinColumn(name="terrain_id", insertable = false, updatable = false)
     private Terrain terrain;
 
-    private Integer reservation;
-
-
-    public Reservation() {
-
-    }
 }

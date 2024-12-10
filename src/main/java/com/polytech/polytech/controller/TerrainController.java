@@ -50,6 +50,16 @@ public class TerrainController {
         return this.terrainMapper.toDTO(this.terrainService.getTerrainById(id));
     }
 
+    @GetMapping("/getByName/{nom}")
+    public List<TerrainDTO> getTerrainByName(@PathVariable String nom) {
+        List<Terrain> listOfTerrain = this.terrainService.getTerrainByName(nom);
+        List<TerrainDTO> listOfTerrainDTO = new ArrayList<>();
+        for (Terrain t : listOfTerrain) {
+            listOfTerrainDTO.add(this.terrainMapper.toDTO(t));
+        }
+        return listOfTerrainDTO;
+    }
+
     @DeleteMapping("/{id}")
     public void deleteTerrain(@PathVariable Integer id) {
         this.terrainService.deleteTerrain(id);
@@ -64,19 +74,6 @@ public class TerrainController {
 
     //Autres méthodes
 
-    /*
-    @GetMapping("/{name}")
-    public List<TerrainDTO> getTerrainByName(@PathVariable String name) {
-        List<TerrainDTO> newTerrainDTO = new ArrayList<>();
-        List<Terrain> terrainList = this.terrainService.getTerrainByName(name);
-        for(Terrain u : terrainList) {
-            newTerrainDTO.add(this.terrainMapper.toDTO(u));
-        }
-        return newTerrainDTO;
-    }
-
-
-     */
 }
 
 
