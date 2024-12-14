@@ -9,17 +9,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TerrainMapper {
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "nom", target = "nom")
-    @Mapping(source = "quantite", target = "quantite")
-    @Mapping(source = "description", target = "description")
-    @Mapping(source = "point_geo", target = "point_geo")
+
     Terrain toEntity(TerrainDTO terrain);
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "nom", target = "nom")
-    @Mapping(source = "quantite", target = "quantite")
-    @Mapping(source = "description", target = "description")
-    @Mapping(source = "point_geo", target = "point_geo")
+
     TerrainDTO toDTO(Terrain terrain);
 }

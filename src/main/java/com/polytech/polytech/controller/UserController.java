@@ -2,16 +2,16 @@ package com.polytech.polytech.controller;
 
 
 import com.polytech.polytech.DTO.ReservationDTO;
-import com.polytech.polytech.DTO.ReservationKeyDTO;
+import com.polytech.polytech.DTO.UserAccountDTO;
 import com.polytech.polytech.DTO.UtilisateurDTO;
 import com.polytech.polytech.entity.Reservation;
 import com.polytech.polytech.entity.Utilisateur;
 import com.polytech.polytech.mapper.ReservationMapper;
+import com.polytech.polytech.mapper.UserAccountMapper;
 import com.polytech.polytech.mapper.UtilisateurMapper;
 import com.polytech.polytech.service.ReservationService;
+import com.polytech.polytech.service.UserAccountService;
 import com.polytech.polytech.service.UtilisateurService;
-import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,28 +31,62 @@ public class UserController {
     private UtilisateurService userService;
 
     @Autowired
+    private ReservationService reservationService;
+
+    @Autowired
+    private UserAccountService userAccountService;
+
+    @Autowired
     private UtilisateurMapper userMapper;
 
     @Autowired
     private ReservationMapper reservationMapper;
 
     @Autowired
-    private ReservationService reservationService;
+    private UserAccountMapper userAccountMapper;
+
+
 
 
     //Constructeur
+
+    /**
+     * @author Alexandre Etheve
+     * @param userServiceParam
+     * @param userMapperParam
+     * @return
+     */
     public UserController(UtilisateurService userServiceParam, UtilisateurMapper userMapperParam) {
         this.userService = userServiceParam;
         this.userMapper = userMapperParam;
     }
 
     //Partie CRUD
+
+    /**
+     * Crée un nouvel utilisateur à partir des données envoyées dans la requête.
+     * Cette méthode reçoit un objet JSON contenant les informations sur un utilisateurs (nom, prenom, mail, password et username)
+     * puis effectue une sauvegarde de ces information. Elle renvoie par la suite un message "Ok" si l'utilisateur a bien été créer
+     * , une exception dans le cas contraire.
+     *
+     * @param userDTO L'objet {@link UtilisateurDTO} qui contient les informations à insérer dans la BDD..
+     * @return Réponse envoyé via HTTP permettant d'indiquer qu'un utilisateur a bien été créer dans la BDD
+     */
     @PostMapping(value="/create" ,produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UtilisateurDTO> createUser(@RequestBody() UtilisateurDTO userDTO) {
         return ResponseEntity.ok(this.userMapper.toDTO(
                 this.userService.createUser(this.userMapper.toEntity(userDTO))));
     }
 
+
+    /**
+     * Renvoie tout les utilisateurs présent dans la base de données.*
+     * Tout les utilisateurs et leurs informations associé seront placé dans une liste d'objet en JSON.
+     * Si aucun utilisateur n'est présent dans la base, une exception sera envoyé.
+     *
+     * On utilise ici la méthode GET pour renvoyer
+     * @return Liste des utilisateurs de la base renvoyé en format JSON
+     */
     @GetMapping
     public List<UtilisateurDTO> getAllUsers() {
         List<Utilisateur> listOfUser = this.userService.getAllUsers();
@@ -63,16 +97,38 @@ public class UserController {
         return listOfUserDTO;
     }
 
+    /**
+     * Renvoie les information
+     *
+     * Tout les utilisateurs et leurs informations associé seront placé dans une liste d'objet en JSON.
+     * Si aucun utilisateur n'est présent dans la base, une exception sera envoyé.
+     *
+     *
+     * On utilise ici la méthode GET pour renvoyer
+     * @return Liste des utilisateurs de la base renvoyé en format JSON
+     */
     @GetMapping("/userID/{id}")
     public UtilisateurDTO getUserById(@PathVariable Integer id) {
             return userMapper.toDTO(this.userService.getUserById(id));
     }
 
+    /**
+     * Supprime un utilisateur en le sélectionnant par son ID dans la base de données
+     *
+     * @param id ID de l'utilisateur que l'on souhaite supprimmer
+     */
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Integer id) {
         this.userService.deleteUser(id);
     }
 
+    /**
+     * Modifie les informations d'un utilisateur, sélectionner par son ID, dans la BDD
+     *
+     * @param id ID de l'utilisateur a modifié
+     * @param updatedUserDTO Objet contenant les informations à modifier concernant l'utilisateur
+     * @return
+     */
     @PutMapping("/{id}")
     public ResponseEntity<UtilisateurDTO> updateUser(@PathVariable Integer id, @RequestBody UtilisateurDTO updatedUserDTO) {
         return ResponseEntity.ok(this.userMapper.toDTO(this.userService.updateUser(id, this.userMapper.toEntity(updatedUserDTO))));
@@ -81,6 +137,15 @@ public class UserController {
 
 
     //Méthodes supplémentaire
+
+    /**
+     * Renvoie un objet utilisateur en fonction de son username
+     *
+     *
+     * @param nom Username de la personne que l'on cherche
+     * @return Information de l'utilisateur que l'on souhaite récupérer
+     */
+
     @GetMapping("/username/{nom}")
     public ResponseEntity<UtilisateurDTO> getUserByNom(@PathVariable String nom) {
         return ResponseEntity.ok(
@@ -88,10 +153,102 @@ public class UserController {
                         this.userService.getUserByName(nom)));
     }
 
-    @PostMapping(value = "/reserver", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ReservationDTO> createReservation(@RequestBody ReservationKeyDTO reservParam) {
-        return ResponseEntity.ok(this.reservationMapper.toDTO(
-                this.reservationService.reserverTerrain(this.reservationMapper.toKeyEntity(reservParam)))
-        );
+
+
+    /**
+     * Renvoie toutes les réservations qui ont été effectué présente dans la base de données
+     *
+     * @return Liste de toutes les reservations contenant l'id du terrain et de l'utilisateur qui l'a réservé
+     */
+    @GetMapping(value="/reserver")
+    public ResponseEntity<List<ReservationDTO>> getAllReservations() {
+        List<ReservationDTO> listReservDTO = new ArrayList<>();
+        List<Reservation> listReserv = this.reservationService.getAllReservation();
+        for (Reservation r : listReserv) {
+            listReservDTO.add(this.reservationMapper.toDTO(r));
+        }
+        return ResponseEntity.ok(listReservDTO);
     }
+
+    /**
+     * Renvoie les réservation spécifique à l'id d'un utilisateur
+     *
+     * @param id ID de l'utilisateur
+     * @return Liste contenant toutes les réservations dont l'id de l'utilisateur correspond avec le paramètre
+     */
+    @GetMapping(value="/getUserReserv/{id}")
+    public ResponseEntity<List<ReservationDTO>> getUserReserv(@PathVariable Integer id) {
+        List<ReservationDTO> listReservDTO = new ArrayList<>();
+        List<Reservation> listReserv = this.reservationService.getReservByUserId(id);
+        for (Reservation r : listReserv) {
+            listReservDTO.add(this.reservationMapper.toDTO(r));
+        }
+        return ResponseEntity.ok(listReservDTO);
+    }
+
+    /**
+     * Renvoie les réservation spécifique à l'id d'un terrain
+     *
+     * @param id ID du terrain associé à la requête
+     * @return Liste des terrains associé à cette ID
+     */
+    @GetMapping(value="/getTerrainReserv/{id}")
+    public ResponseEntity<List<ReservationDTO>> getTerrainReserv(@PathVariable Integer id) {
+        List<ReservationDTO> listReservDTO = new ArrayList<>();
+        List<Reservation> listReserv = this.reservationService.getReservByTerrainId(id);
+        for (Reservation r : listReserv) {
+            listReservDTO.add(this.reservationMapper.toDTO(r));
+        }
+        return ResponseEntity.ok(listReservDTO);
+    }
+
+    /**
+     * Permet à un utilisateur de faire une reservation. Les données de cette reservation seront enregistré dans une BDD
+     *
+     *
+     *
+     * @param terrain_id
+     * @param utilisateur_id
+     * @return
+     */
+    @PostMapping(value = "/reserver")
+    public ResponseEntity<ReservationDTO> createReservation(@RequestParam Integer terrain_id, @RequestParam Integer utilisateur_id) {
+        return ResponseEntity.ok(
+                this.reservationMapper.toDTO(
+                this.reservationService.reserverTerrain(utilisateur_id, terrain_id)
+                ));
+    }
+
+    @DeleteMapping(value="/supprimmerReserv")
+    public ResponseEntity<String> deleteReservation(@RequestParam Integer utilisateur_id, @RequestParam Integer terrain_id) {
+        if(this.reservationService.supprimmerReserv(terrain_id, utilisateur_id) == 0) {
+            return ResponseEntity.ok("Reservation supprimmer avec succès");
+        }
+        else return ResponseEntity.ok("Echec dans la suppression");
+    }
+
+
+
+
+
+    /**
+     * Renvoie un ID de l'utilisateur pour confirmer la connexion à son compte
+     *
+     * La fonction reçoit un username et un mot de passe en entré et analyse ceux-ci pour voir si la connexion est possible.
+     * On utiliser ici le mapper pour transformer les DTO en entité et les envoyer dans les service pour traitements.
+     *
+     * @param userAccount Objet contenant le username et le mot de passe utilisateur
+     * @return
+     */
+    @PostMapping(value="/connection", produces = {MediaType.APPLICATION_JSON_VALUE},consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Integer> connectUser(@RequestBody UserAccountDTO userAccount) {
+        Integer userID = this.userAccountService.checkUser(this.userAccountMapper.toEntity(userAccount));
+
+        if (userID != null) {
+            return ResponseEntity.ok(userID);
+        }
+        else return ResponseEntity.ok(-1);
+
+    }
+
 }

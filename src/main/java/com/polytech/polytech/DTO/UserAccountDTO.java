@@ -7,10 +7,10 @@ import lombok.*;
 @Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@Builder
-@ToString
-public class ReservationKeyDTO {
-    private Integer utilisateur_id;
+public class UserAccountDTO {
 
-    private Integer terrain_id;
+    private String username;
+
+    private String password;
+
 }

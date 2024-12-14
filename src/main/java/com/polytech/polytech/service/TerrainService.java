@@ -20,6 +20,10 @@ public class TerrainService {
         this.terrainRepository = terrainRepository;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Terrain> getAllTerrains() {
         if (terrainRepository.findAll().isEmpty()) {
             throw new NoTerrainInListException();
@@ -27,14 +31,28 @@ public class TerrainService {
         else {return terrainRepository.findAll();}
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Terrain getTerrainById(Integer id) {
         return terrainRepository.findById(id).orElseThrow(TerrainNotFoundException::new);
     }
 
+    /**
+     *
+     * @param terrain
+     * @return
+     */
     public Terrain createTerrain(Terrain terrain) {
         return terrainRepository.save(terrain);
     }
 
+    /**
+     *
+     * @param id
+     */
     public void deleteTerrain(Integer id) {
         if (!terrainRepository.existsById(id)) {
             throw new TerrainNotFoundException();
@@ -43,6 +61,12 @@ public class TerrainService {
         terrainRepository.deleteById(id);}
     }
 
+    /**
+     *
+     * @param id
+     * @param updatedTerrain
+     * @return
+     */
     public Terrain updateTerrain(Integer id, Terrain updatedTerrain) {
         if(terrainRepository.existsById(id)) {
             Terrain existingTerrain = getTerrainById(id);
@@ -57,6 +81,11 @@ public class TerrainService {
 
     //Other methods
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     public List<Terrain> getTerrainByName(String name) {
         if(terrainRepository.findAll().isEmpty()) {
             throw (new NoUserInListException());

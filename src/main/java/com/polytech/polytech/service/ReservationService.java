@@ -12,6 +12,9 @@ import com.polytech.polytech.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ReservationService {
 
@@ -24,13 +27,86 @@ public class ReservationService {
     @Autowired
     private UserRepository utilisateurRepo;
 
+    /**
+     *
+     * @return
+     */
+    public List<Reservation> getAllReservation() {
+        return reservationRepo.findAll();
+    }
 
-    public Reservation reserverTerrain(ReservationKey reservation) {
-        Reservation newRes = new Reservation();
-        newRes.setTerrain(this.terrainRepo.findById(reservation.getTerrain_id()).orElseThrow(TerrainNotFoundException::new));
-        newRes.setUtilisateur(this.utilisateurRepo.findById(reservation.getUtilisateur_id()).orElseThrow(UserNotFoundException::new));
-        newRes.setId(reservation);
-        return reservationRepo.save(newRes);
+    /**
+     *
+     * @param userId
+     * @return
+     */
+    public List<Reservation> getReservByUserId(Integer userId) {
+        return reservationRepo.findByUtilisateur_Id(userId);
+    }
+
+    /**
+     *
+     * @param terrainId
+     * @return
+     */
+    public List<Reservation> getReservByTerrainId(Integer terrainId) {
+        return reservationRepo.findByTerrain_Id(terrainId);
+    }
+
+
+    /**
+     *
+     * @param reservationId
+     */
+    public void deleteReservation(ReservationKey reservationId) {
+        if(this.reservationRepo.findById(reservationId).orElse(null) != null) {
+            this.reservationRepo.deleteById(reservationId);
+        }
+        else throw new RuntimeException("Reservation with id " + reservationId + " not found");
+    }
+
+    /**
+     *
+     * @param utilisateurId
+     * @param terrainId
+     * @return
+     */
+    public Reservation reserverTerrain(Integer utilisateurId, Integer terrainId) {
+
+        Utilisateur util = utilisateurRepo.findById(utilisateurId).orElseThrow(UserNotFoundException::new);
+        Terrain ter = terrainRepo.findById(terrainId).orElseThrow(TerrainNotFoundException::new);
+
+        //Création de la clé
+        ReservationKey reservationKey = new ReservationKey();
+        reservationKey.setTerrain_id(ter.getId());
+        reservationKey.setUtilisateur_id(util.getId());
+
+        //Création de la reservation dans la BDD
+        Reservation reserv = new Reservation();
+        reserv.setUtilisateur(util);
+        reserv.setTerrain(ter);
+        reserv.setId(reservationKey);
+
+        if(this.reservationRepo.existsById(reservationKey)) {
+            //Ajouter une exception
+            return null;
+        }
+
+        return reservationRepo.save(reserv);
+    }
+
+    public int supprimmerReserv(Integer terrainId, Integer utilisateurId) {
+        ReservationKey resKey = new ReservationKey();
+        resKey.setUtilisateur_id(utilisateurId);
+        resKey.setTerrain_id(terrainId);
+        if(this.reservationRepo.existsById(resKey)) {
+
+            this.reservationRepo.deleteById(resKey);
+            return 0;
+        }
+        return 1;
+
+
     }
 
 }

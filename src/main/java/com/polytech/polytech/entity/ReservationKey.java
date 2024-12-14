@@ -1,7 +1,6 @@
 package com.polytech.polytech.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -13,6 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReservationKey implements Serializable {
+
 
     @Column(name="utilisateur_id")
     private Integer utilisateur_id;

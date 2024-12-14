@@ -14,6 +14,13 @@ public class UtilisateurService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Service renvoyant une liste d'utilisateur.
+     *
+     * Ce service utilise l'instance de repository pour récupérer tout les utilisateurs de la BDD et les envoyer dans le controller
+     *
+     * @return Liste d'utilisateur issue de la base de données
+     */
     public List<Utilisateur> getAllUsers() {
         if(userRepository.findAll().isEmpty()) {
             throw (new NoUserInListException());
@@ -22,14 +29,31 @@ public class UtilisateurService {
         }
     }
 
+    /**
+     *
+     * @param user Entité utilisateur dont les informations sont envoyé dans le repository pour insertion
+     * @return
+     */
     public Utilisateur createUser(Utilisateur user) {
         return userRepository.save(user);
     }
 
+    /**
+     * Revoie un objet utilisateur basé sur l'id en paramètre
+     *
+     * @param id Id de l'utilisateur que l'on souhaite récupérer dans le repository
+     * @return
+     */
     public Utilisateur getUserById(Integer id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
+    /**
+     * Revoie un objet utilisateur basé sur l'username en paramètre
+     *
+     * @param name
+     * @return
+     */
     public Utilisateur getUserByName(String name) {
         if(userRepository.findAll().isEmpty()) {
             throw (new NoUserInListException());
@@ -38,6 +62,11 @@ public class UtilisateurService {
         }
 
 
+    /**
+     * Supprimme un utilisateur en se basant sur l'id en paramètre
+     *
+     * @param id
+     */
     public void deleteUser(Integer id) {
         if(userRepository.findById(id).isPresent()) {
             userRepository.deleteById(id);
@@ -46,6 +75,13 @@ public class UtilisateurService {
         }
     }
 
+    /**
+     * Met à jour les informations d'un utilisateurs en se basant sur l'id
+     *
+     * @param id ID de l'utilisateur que l'on va modifier
+     * @param updatedUser Informations à extraire pour modification
+     * @return
+     */
     public Utilisateur updateUser(Integer id, Utilisateur updatedUser) {
         if(userRepository.findById(id).isPresent()) {
             Utilisateur existingUser = getUserById(id);
