@@ -12,7 +12,12 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, ReservationKey> {
-    List<Reservation> findByUtilisateur_Id(Integer utilisateurId); // Trouver les réservations d'un utilisateur
+    @Query("SELECT r FROM Reservation r WHERE r.id.utilisateur_id=:utilisateurId")
+    List<Reservation> findByUtilisateur_Id(Integer utilisateurId);
+
+    @Query("SELECT r FROM Reservation r WHERE r.id.terrain_id=:terrainId")
     List<Reservation> findByTerrain_Id(Integer terrainId);
+
+
 
 }

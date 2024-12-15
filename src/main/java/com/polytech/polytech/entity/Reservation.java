@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import com.polytech.polytech.entity.*;
 
+import java.util.Date;
+
 @Entity
 @Builder
 @Getter

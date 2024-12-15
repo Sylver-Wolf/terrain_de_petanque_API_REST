@@ -21,8 +21,9 @@ public class TerrainService {
     }
 
     /**
+     * Récupère tout les terrains de la BDD
      *
-     * @return
+     * @return Liste contenant des objets {@link Terrain}
      */
     public List<Terrain> getAllTerrains() {
         if (terrainRepository.findAll().isEmpty()) {
@@ -32,17 +33,19 @@ public class TerrainService {
     }
 
     /**
+     * Récupère le terrain dans la database dont l'id correspond à celui que l'on met en entré
      *
-     * @param id
-     * @return
+     * @param id Id du terrain que l'on souhaite avoir
+     * @return Objet {@link Terrain}
      */
     public Terrain getTerrainById(Integer id) {
         return terrainRepository.findById(id).orElseThrow(TerrainNotFoundException::new);
     }
 
     /**
+     * Créer dans la base de donnée un nouveau terrain
      *
-     * @param terrain
+     * @param terrain Objet {@link Terrain} que l'on souhaite créer
      * @return
      */
     public Terrain createTerrain(Terrain terrain) {
@@ -50,8 +53,9 @@ public class TerrainService {
     }
 
     /**
+     * Supprimme dans la BDD le terraain sélectionné par l'id
      *
-     * @param id
+     * @param id Id du terrain que l'on veut supprimmer
      */
     public void deleteTerrain(Integer id) {
         if (!terrainRepository.existsById(id)) {
@@ -62,10 +66,11 @@ public class TerrainService {
     }
 
     /**
+     * Met à jour les information d'un terrain dans la BDD
      *
-     * @param id
-     * @param updatedTerrain
-     * @return
+     * @param id Id du terrain que l'on souhaite mettre à jour
+     * @param updatedTerrain Objet {@link Terrain} contenant les informations à mettre à jour
+     * @return Objet {@link Terrain}
      */
     public Terrain updateTerrain(Integer id, Terrain updatedTerrain) {
         if(terrainRepository.existsById(id)) {
@@ -82,9 +87,10 @@ public class TerrainService {
     //Other methods
 
     /**
+     * Récupère un terrain par rapport à une chaine de caractère correspondant au patterne que l'on cherche
      *
-     * @param name
-     * @return
+     * @param name Chaine de caractère que l'on souhaite analyser pour trouver les nom de terrain associé
+     * @return Liste de terrain contenant des objets {@link Terrain}
      */
     public List<Terrain> getTerrainByName(String name) {
         if(terrainRepository.findAll().isEmpty()) {

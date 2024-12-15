@@ -6,6 +6,7 @@ import com.polytech.polytech.DTO.UserAccountDTO;
 import com.polytech.polytech.DTO.UtilisateurDTO;
 import com.polytech.polytech.entity.Reservation;
 import com.polytech.polytech.entity.Utilisateur;
+import com.polytech.polytech.exception.NoAccountFoundException;
 import com.polytech.polytech.mapper.ReservationMapper;
 import com.polytech.polytech.mapper.UserAccountMapper;
 import com.polytech.polytech.mapper.UtilisateurMapper;
@@ -13,11 +14,13 @@ import com.polytech.polytech.service.ReservationService;
 import com.polytech.polytech.service.UserAccountService;
 import com.polytech.polytech.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 //@Slf4j
@@ -160,7 +163,7 @@ public class UserController {
      *
      * @return Liste de toutes les reservations contenant l'id du terrain et de l'utilisateur qui l'a réservé
      */
-    @GetMapping(value="/reserver")
+    @GetMapping(value="/reservation")
     public ResponseEntity<List<ReservationDTO>> getAllReservations() {
         List<ReservationDTO> listReservDTO = new ArrayList<>();
         List<Reservation> listReserv = this.reservationService.getAllReservation();
@@ -176,7 +179,7 @@ public class UserController {
      * @param id ID de l'utilisateur
      * @return Liste contenant toutes les réservations dont l'id de l'utilisateur correspond avec le paramètre
      */
-    @GetMapping(value="/getUserReserv/{id}")
+    @GetMapping(value="/reservationU/{id}")
     public ResponseEntity<List<ReservationDTO>> getUserReserv(@PathVariable Integer id) {
         List<ReservationDTO> listReservDTO = new ArrayList<>();
         List<Reservation> listReserv = this.reservationService.getReservByUserId(id);
@@ -192,7 +195,7 @@ public class UserController {
      * @param id ID du terrain associé à la requête
      * @return Liste des terrains associé à cette ID
      */
-    @GetMapping(value="/getTerrainReserv/{id}")
+    @GetMapping(value="/reservationT/{id}")
     public ResponseEntity<List<ReservationDTO>> getTerrainReserv(@PathVariable Integer id) {
         List<ReservationDTO> listReservDTO = new ArrayList<>();
         List<Reservation> listReserv = this.reservationService.getReservByTerrainId(id);
@@ -205,13 +208,11 @@ public class UserController {
     /**
      * Permet à un utilisateur de faire une reservation. Les données de cette reservation seront enregistré dans une BDD
      *
-     *
-     *
      * @param terrain_id
      * @param utilisateur_id
      * @return
      */
-    @PostMapping(value = "/reserver")
+    @PostMapping(value = "/reservation")
     public ResponseEntity<ReservationDTO> createReservation(@RequestParam Integer terrain_id, @RequestParam Integer utilisateur_id) {
         return ResponseEntity.ok(
                 this.reservationMapper.toDTO(
@@ -219,16 +220,20 @@ public class UserController {
                 ));
     }
 
-    @DeleteMapping(value="/supprimmerReserv")
+
+    /**
+     * Supprime une réservation présente dans la BDD en utilisant l'id du terrain et de l'utilisateur
+     *
+     * @param utilisateur_id Id de l'utilisateur qui a réservé
+     * @param terrain_id Id du terrain qui a été reservé
+     */
+    @DeleteMapping(value="/reservation")
     public ResponseEntity<String> deleteReservation(@RequestParam Integer utilisateur_id, @RequestParam Integer terrain_id) {
         if(this.reservationService.supprimmerReserv(terrain_id, utilisateur_id) == 0) {
             return ResponseEntity.ok("Reservation supprimmer avec succès");
         }
         else return ResponseEntity.ok("Echec dans la suppression");
     }
-
-
-
 
 
     /**
@@ -247,7 +252,7 @@ public class UserController {
         if (userID != null) {
             return ResponseEntity.ok(userID);
         }
-        else return ResponseEntity.ok(-1);
+        else throw new NoAccountFoundException();
 
     }
 

@@ -4,6 +4,7 @@ import com.polytech.polytech.entity.Reservation;
 import com.polytech.polytech.entity.ReservationKey;
 import com.polytech.polytech.entity.Terrain;
 import com.polytech.polytech.entity.Utilisateur;
+import com.polytech.polytech.exception.AlreadyExistReservation;
 import com.polytech.polytech.exception.TerrainNotFoundException;
 import com.polytech.polytech.exception.UserNotFoundException;
 import com.polytech.polytech.repository.ReservationRepository;
@@ -28,6 +29,7 @@ public class ReservationService {
     private UserRepository utilisateurRepo;
 
     /**
+     * Récupère toutes les réservations présente dans la BDD
      *
      * @return
      */
@@ -36,8 +38,9 @@ public class ReservationService {
     }
 
     /**
+     * Récupère les réservations associé à l'id d'un utilisateur
      *
-     * @param userId
+     * @param userId Id de l'utilisateur dont on souhaite récupérer les réservation associé
      * @return
      */
     public List<Reservation> getReservByUserId(Integer userId) {
@@ -45,30 +48,20 @@ public class ReservationService {
     }
 
     /**
+     * Récupère les réservations associé à l'id d'un terrain
      *
-     * @param terrainId
-     * @return
+     * @param terrainId Id du terrain dont on cherche les réservation associé
+     * @return Liste de réservation
      */
     public List<Reservation> getReservByTerrainId(Integer terrainId) {
         return reservationRepo.findByTerrain_Id(terrainId);
     }
 
-
     /**
+     * Créer une réservation dans la base de données en indiquant l'id du terrain et de l'utilisateur associé
      *
-     * @param reservationId
-     */
-    public void deleteReservation(ReservationKey reservationId) {
-        if(this.reservationRepo.findById(reservationId).orElse(null) != null) {
-            this.reservationRepo.deleteById(reservationId);
-        }
-        else throw new RuntimeException("Reservation with id " + reservationId + " not found");
-    }
-
-    /**
-     *
-     * @param utilisateurId
-     * @param terrainId
+     * @param utilisateurId Utilisateur qui effectue la réservation
+     * @param terrainId Terrain qui a été réservé
      * @return
      */
     public Reservation reserverTerrain(Integer utilisateurId, Integer terrainId) {
@@ -89,12 +82,19 @@ public class ReservationService {
 
         if(this.reservationRepo.existsById(reservationKey)) {
             //Ajouter une exception
-            return null;
+            throw new AlreadyExistReservation();
         }
 
         return reservationRepo.save(reserv);
     }
 
+    /**
+     *
+     *
+     * @param terrainId Id du terrain associé à la reservation
+     * @param utilisateurId Id de l'utilisateur associé à la reservation
+     * @return code d'erreur concernant la suppression de la réservation
+     */
     public int supprimmerReserv(Integer terrainId, Integer utilisateurId) {
         ReservationKey resKey = new ReservationKey();
         resKey.setUtilisateur_id(utilisateurId);
