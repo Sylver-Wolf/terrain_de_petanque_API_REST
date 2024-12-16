@@ -11,6 +11,9 @@ import java.util.List;
 
 @Service
 public class UtilisateurService {
+    /**
+     * Instance de {@link UserRepository} pour appeler ses méthodes dans le service
+     */
     @Autowired
     private UserRepository userRepository;
 

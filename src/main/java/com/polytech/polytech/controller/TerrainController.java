@@ -30,6 +30,11 @@ public class TerrainController {
         this.terrainMapper = terrainMapper;
     }
 
+    /**
+     * Récupère tout les terrains de la BDD
+     *
+     * @return Liste d'objet {@link TerrainDTO}
+     */
     @GetMapping
     public List<TerrainDTO> getAllTerrains() {
         List<Terrain> listOfTerrain = this.terrainService.getAllTerrains();
@@ -40,16 +45,37 @@ public class TerrainController {
         return listOfTerrainDTO;
     }
 
+    /**
+     * Créer un terrain dans la BDD
+     *
+     * @param terrainDTO Objet {@link TerrainDTO} que l'on souhaite mettre dans la BDD
+     * @return Message de status
+     */
     @PostMapping
-    public Terrain createTerrain(@RequestBody TerrainDTO terrainDTO) {
-        return this.terrainService.createTerrain(this.terrainMapper.toEntity(terrainDTO));
+    public ResponseEntity<String> createTerrain(@RequestBody TerrainDTO terrainDTO) {
+        if(this.terrainService.createTerrain(this.terrainMapper.toEntity(terrainDTO)) != null ){
+            return ResponseEntity.ok("Terrain created");
+        }
+        return ResponseEntity.badRequest().body("Error in the creation of a terrain");
     }
 
+    /**
+     * Récupère un terrain par son Id
+     *
+     * @param id Id du Terrain que l'on veut récuipérer
+     * @return Objet {@link TerrainDTO}
+     */
     @GetMapping("/{id}")
     public TerrainDTO getTerrainById(@PathVariable Integer id) {
         return this.terrainMapper.toDTO(this.terrainService.getTerrainById(id));
     }
 
+    /**
+     * Récupère un terrain par rapport à son nom
+     *
+     * @param nom Nom du terrain associé
+     * @return Liste contenant des objet {@link TerrainDTO}
+     */
     @GetMapping("/getByName/{nom}")
     public List<TerrainDTO> getTerrainByName(@PathVariable String nom) {
         List<Terrain> listOfTerrain = this.terrainService.getTerrainByName(nom);
@@ -60,11 +86,22 @@ public class TerrainController {
         return listOfTerrainDTO;
     }
 
+    /**
+     * Supprimme un terrain dans la base données
+     *
+     * @param id Id du terrain que l'on veut supprimmer
+     */
     @DeleteMapping("/{id}")
     public void deleteTerrain(@PathVariable Integer id) {
         this.terrainService.deleteTerrain(id);
     }
 
+    /**
+     *
+     * @param id
+     * @param updatedTerrainDTO
+     * @return
+     */
     @PutMapping("/{id}")
     public ResponseEntity<TerrainDTO> updateTerrain(@PathVariable Integer id, @RequestBody TerrainDTO updatedTerrainDTO) {
         return ResponseEntity.ok(this.terrainMapper.toDTO(

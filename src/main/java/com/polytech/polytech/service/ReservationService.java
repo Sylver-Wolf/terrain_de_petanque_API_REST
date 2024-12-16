@@ -5,6 +5,7 @@ import com.polytech.polytech.entity.ReservationKey;
 import com.polytech.polytech.entity.Terrain;
 import com.polytech.polytech.entity.Utilisateur;
 import com.polytech.polytech.exception.AlreadyExistReservation;
+import com.polytech.polytech.exception.NoReservationFound;
 import com.polytech.polytech.exception.TerrainNotFoundException;
 import com.polytech.polytech.exception.UserNotFoundException;
 import com.polytech.polytech.repository.ReservationRepository;
@@ -19,12 +20,21 @@ import java.util.List;
 @Service
 public class ReservationService {
 
+    /**
+     * Instance de {@link ReservationRepository} pour faire appel à ses méthodes
+     */
     @Autowired
     private ReservationRepository reservationRepo;
 
+    /**
+     * Instance de {@link TerrainRepository} pour faire appel à ses méthodes
+     */
     @Autowired
     private TerrainRepository terrainRepo;
 
+    /**
+     * Instance de {@link UserRepository} pour appeler ses méthodes dans le service
+     */
     @Autowired
     private UserRepository utilisateurRepo;
 
@@ -85,6 +95,29 @@ public class ReservationService {
             throw new AlreadyExistReservation();
         }
 
+        return reservationRepo.save(reserv);
+    }
+
+
+    /**
+     * Modification d'une réservation en prenant l'ancien Id du terrain et en le remplacant par le nouveau
+     *
+     * @param oldId Ancien id à remplacer
+     * @param newId Nouvelle Id
+     * @param utilisateurId Id de l'utilisateur souhaitant faire la modification
+     * @return
+     */
+    public Reservation updateReservation(Integer oldId, Integer newId, Integer utilisateurId) {
+        ReservationKey reservationKey = new ReservationKey();
+        reservationKey.setUtilisateur_id(utilisateurId);
+        reservationKey.setTerrain_id(oldId);
+
+        reservationRepo.deleteById(reservationKey);
+        reservationKey.setTerrain_id(newId);
+        Reservation reserv = new Reservation();
+        reserv.setId(reservationKey);
+        reserv.setUtilisateur(this.utilisateurRepo.findById(utilisateurId).orElseThrow(UserNotFoundException::new));
+        reserv.setTerrain(this.terrainRepo.findById(newId).orElseThrow(TerrainNotFoundException::new));
         return reservationRepo.save(reserv);
     }
 

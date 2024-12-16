@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserAccountService {
 
+    /**
+     * Instance de {@link UserRepository} pour faire appel à ces méthodes
+     */
     @Autowired
     private UserRepository userRepository;
 

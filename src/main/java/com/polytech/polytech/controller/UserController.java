@@ -77,8 +77,10 @@ public class UserController {
      */
     @PostMapping(value="/create" ,produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UtilisateurDTO> createUser(@RequestBody() UtilisateurDTO userDTO) {
-        return ResponseEntity.ok(this.userMapper.toDTO(
-                this.userService.createUser(this.userMapper.toEntity(userDTO))));
+        return ResponseEntity.ok(
+                this.userMapper.toDTO(
+                    this.userService.createUser(
+                        this.userMapper.toEntity(userDTO))));
     }
 
 
@@ -92,8 +94,11 @@ public class UserController {
      */
     @GetMapping
     public List<UtilisateurDTO> getAllUsers() {
+        //Récupération de la liste pour la transformer en DTO
         List<Utilisateur> listOfUser = this.userService.getAllUsers();
         List<UtilisateurDTO> listOfUserDTO = new ArrayList<>();
+
+        //Boucle pour transformation de chaque éléments
         for (Utilisateur u : listOfUser) {
             listOfUserDTO.add(this.userMapper.toDTO(u));
         }
@@ -112,7 +117,8 @@ public class UserController {
      */
     @GetMapping("/userID/{id}")
     public UtilisateurDTO getUserById(@PathVariable Integer id) {
-            return userMapper.toDTO(this.userService.getUserById(id));
+            return userMapper.toDTO(
+                    this.userService.getUserById(id));
     }
 
     /**
@@ -134,7 +140,9 @@ public class UserController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<UtilisateurDTO> updateUser(@PathVariable Integer id, @RequestBody UtilisateurDTO updatedUserDTO) {
-        return ResponseEntity.ok(this.userMapper.toDTO(this.userService.updateUser(id, this.userMapper.toEntity(updatedUserDTO))));
+        return ResponseEntity.ok(this.userMapper.toDTO(
+                this.userService.updateUser(id,
+                        this.userMapper.toEntity(updatedUserDTO))));
     }
 
 
@@ -216,7 +224,23 @@ public class UserController {
     public ResponseEntity<ReservationDTO> createReservation(@RequestParam Integer terrain_id, @RequestParam Integer utilisateur_id) {
         return ResponseEntity.ok(
                 this.reservationMapper.toDTO(
-                this.reservationService.reserverTerrain(utilisateur_id, terrain_id)
+                    this.reservationService.reserverTerrain(utilisateur_id, terrain_id)
+                ));
+    }
+
+    /**
+     * Modification d'une réservation
+     *
+     * @param oldTerrainId Ancien Id du terrain
+     * @param newTerrainId Nouvelle iD du terrain
+     * @param utilisateur_id Utilisateur souhaitant faire la requête
+     * @return
+     */
+    @PutMapping(value="/reservation")
+    public ResponseEntity<ReservationDTO> updateReservation(@RequestParam Integer oldTerrainId ,@RequestParam Integer newTerrainId , @RequestParam Integer utilisateur_id) {
+        return ResponseEntity.ok(
+                this.reservationMapper.toDTO(
+                        this.reservationService.updateReservation(oldTerrainId, newTerrainId, utilisateur_id)
                 ));
     }
 
@@ -243,12 +267,14 @@ public class UserController {
      * On utiliser ici le mapper pour transformer les DTO en entité et les envoyer dans les service pour traitements.
      *
      * @param userAccount Objet contenant le username et le mot de passe utilisateur
-     * @return
+     * @return Entier représentant l'Id de l'utilisateur associé
      */
     @PostMapping(value="/connection", produces = {MediaType.APPLICATION_JSON_VALUE},consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Integer> connectUser(@RequestBody UserAccountDTO userAccount) {
+        //Vérification des informations
         Integer userID = this.userAccountService.checkUser(this.userAccountMapper.toEntity(userAccount));
 
+        //Action à effectuer en fonction de l'état de userID
         if (userID != null) {
             return ResponseEntity.ok(userID);
         }

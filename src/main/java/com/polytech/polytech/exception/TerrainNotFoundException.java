@@ -7,7 +7,6 @@ import java.io.Serial;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The terrain has not been found")
 public class TerrainNotFoundException extends RuntimeException{
-
     @Serial
     private static final long serialVersionUID = -522670554947533091L;
 }

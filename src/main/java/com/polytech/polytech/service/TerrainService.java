@@ -13,6 +13,10 @@ import java.util.List;
 
 @Service
 public class TerrainService {
+
+    /**
+     * Instance de {@link TerrainRepository} pour faire appel à ses méthodes
+     */
     @Autowired
     private TerrainRepository terrainRepository;
 
