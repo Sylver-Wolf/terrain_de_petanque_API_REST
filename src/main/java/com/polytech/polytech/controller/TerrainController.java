@@ -25,6 +25,12 @@ public class TerrainController {
     @Autowired
     private TerrainMapper terrainMapper;
 
+    /**
+     * Constructeur de la classe TerrainService
+     *
+     * @param terrainService Instance de la classe {@link TerrainService}
+     * @param terrainMapper Instance de la classe {@link TerrainMapper}
+     */
     public TerrainController(TerrainService terrainService, TerrainMapper terrainMapper) {
         this.terrainService = terrainService;
         this.terrainMapper = terrainMapper;
@@ -97,19 +103,17 @@ public class TerrainController {
     }
 
     /**
+     * Met à jour les informations d'un terrain
      *
-     * @param id
-     * @param updatedTerrainDTO
-     * @return
+     * @param id Id du terrain à modifier
+     * @param updatedTerrainDTO Objet {@link TerrainDTO} contenant les informations à modifier
+     * @return Réponse dans l'URL
      */
     @PutMapping("/{id}")
     public ResponseEntity<TerrainDTO> updateTerrain(@PathVariable Integer id, @RequestBody TerrainDTO updatedTerrainDTO) {
         return ResponseEntity.ok(this.terrainMapper.toDTO(
                 terrainService.updateTerrain(id, this.terrainMapper.toEntity(updatedTerrainDTO))));
     }
-
-
-    //Autres méthodes
 
 }
 

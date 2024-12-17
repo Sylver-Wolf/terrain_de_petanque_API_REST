@@ -54,9 +54,9 @@ public class UserController {
     //Constructeur
 
     /**
-     * @author Alexandre Etheve
-     * @param userServiceParam
-     * @param userMapperParam
+     * Constructeur de la classe {@link UserController}
+     * @param userServiceParam Instance de {@link UtilisateurService} permettant l'appel des services utilisateurs
+     * @param userMapperParam Instance de {@link UtilisateurMapper} permettant la convertion des entité en DTO et vice-versa
      * @return
      */
     public UserController(UtilisateurService userServiceParam, UtilisateurMapper userMapperParam) {
@@ -156,7 +156,6 @@ public class UserController {
      * @param nom Username de la personne que l'on cherche
      * @return Information de l'utilisateur que l'on souhaite récupérer
      */
-
     @GetMapping("/username/{nom}")
     public ResponseEntity<UtilisateurDTO> getUserByNom(@PathVariable String nom) {
         return ResponseEntity.ok(
@@ -173,8 +172,10 @@ public class UserController {
      */
     @GetMapping(value="/reservation")
     public ResponseEntity<List<ReservationDTO>> getAllReservations() {
+        //Initialisation des liste pour le mapping
         List<ReservationDTO> listReservDTO = new ArrayList<>();
         List<Reservation> listReserv = this.reservationService.getAllReservation();
+        //Boucle de convertion entité to DTO
         for (Reservation r : listReserv) {
             listReservDTO.add(this.reservationMapper.toDTO(r));
         }
@@ -189,8 +190,10 @@ public class UserController {
      */
     @GetMapping(value="/reservationU/{id}")
     public ResponseEntity<List<ReservationDTO>> getUserReserv(@PathVariable Integer id) {
+        //Initialisation des liste pour le mapping
         List<ReservationDTO> listReservDTO = new ArrayList<>();
         List<Reservation> listReserv = this.reservationService.getReservByUserId(id);
+        //Boucle de convertion entité to DTO
         for (Reservation r : listReserv) {
             listReservDTO.add(this.reservationMapper.toDTO(r));
         }
@@ -205,8 +208,10 @@ public class UserController {
      */
     @GetMapping(value="/reservationT/{id}")
     public ResponseEntity<List<ReservationDTO>> getTerrainReserv(@PathVariable Integer id) {
+        //Initialisation des liste pour le mapping
         List<ReservationDTO> listReservDTO = new ArrayList<>();
         List<Reservation> listReserv = this.reservationService.getReservByTerrainId(id);
+        //Boucle de convertion entité to DTO
         for (Reservation r : listReserv) {
             listReservDTO.add(this.reservationMapper.toDTO(r));
         }
@@ -216,9 +221,9 @@ public class UserController {
     /**
      * Permet à un utilisateur de faire une reservation. Les données de cette reservation seront enregistré dans une BDD
      *
-     * @param terrain_id
-     * @param utilisateur_id
-     * @return
+     * @param terrain_id Id du terrain à réserver
+     * @param utilisateur_id Id de l'utilisateur effectuant la réservation
+     * @return Réponse dans l'URL
      */
     @PostMapping(value = "/reservation")
     public ResponseEntity<ReservationDTO> createReservation(@RequestParam Integer terrain_id, @RequestParam Integer utilisateur_id) {
@@ -253,7 +258,8 @@ public class UserController {
      */
     @DeleteMapping(value="/reservation")
     public ResponseEntity<String> deleteReservation(@RequestParam Integer utilisateur_id, @RequestParam Integer terrain_id) {
-        if(this.reservationService.supprimmerReserv(terrain_id, utilisateur_id) == 0) {
+        //Condition de  vérification de code d'erreur
+        if(this.reservationService.supprimerReserv(terrain_id, utilisateur_id) == 0) {
             return ResponseEntity.ok("Reservation supprimmer avec succès");
         }
         else return ResponseEntity.ok("Echec dans la suppression");

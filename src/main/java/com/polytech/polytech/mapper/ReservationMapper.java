@@ -8,10 +8,22 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface ReservationMapper {
-    //@Mapping(source = "reservation", target = "reservation")
+
+
+    /**
+     * Transforme les DTO en entité
+     *
+     * @param Resa
+     * @return Objet {@link Reservation}
+     */
     Reservation toEntity(ReservationDTO Resa);
 
-    //@Mapping(source = "reservation", target = "reservation")
+    /**
+     * Transforme les entités en DTO
+     *
+     * @param Resa
+     * @return Objet {@link ReservationDTO}
+     */
     ReservationDTO toDTO(Reservation Resa);
 
 }

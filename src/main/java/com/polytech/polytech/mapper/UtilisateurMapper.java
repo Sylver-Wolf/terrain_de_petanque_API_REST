@@ -12,8 +12,21 @@ import org.mapstruct.factory.Mappers;
 public interface UtilisateurMapper {
 
 
+    /**
+     * Transforme les DTO en entité
+     *
+     * @param User
+     * @return {@link UtilisateurDTO}
+     */
     Utilisateur toEntity(UtilisateurDTO User);
 
+
+    /**
+     * Transforme les entité en DTO
+     *
+     * @param User
+     * @return {@link UtilisateurDTO}
+     */
     UtilisateurDTO toDTO(Utilisateur User);
 
 }

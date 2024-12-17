@@ -10,6 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @ToString
 public class TerrainDTO {
 
@@ -20,7 +21,4 @@ public class TerrainDTO {
     private String point_geo;
     Set<Reservation> Reservations;
 
-    public TerrainDTO() {
-
-    }
 }

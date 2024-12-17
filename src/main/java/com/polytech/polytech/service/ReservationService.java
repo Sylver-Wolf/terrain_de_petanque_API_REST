@@ -123,13 +123,13 @@ public class ReservationService {
     }
 
     /**
-     *
+     * Permet la suppression d'une réservation
      *
      * @param terrainId Id du terrain associé à la reservation
      * @param utilisateurId Id de l'utilisateur associé à la reservation
      * @return code d'erreur concernant la suppression de la réservation
      */
-    public int supprimmerReserv(Integer terrainId, Integer utilisateurId) {
+    public int supprimerReserv(Integer terrainId, Integer utilisateurId) {
         ReservationKey resKey = new ReservationKey();
         resKey.setUtilisateur_id(utilisateurId);
         resKey.setTerrain_id(terrainId);
