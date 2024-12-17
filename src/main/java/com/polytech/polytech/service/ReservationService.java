@@ -89,7 +89,7 @@ public class ReservationService {
         reserv.setUtilisateur(util);
         reserv.setTerrain(ter);
         reserv.setId(reservationKey);
-
+        reserv.setNumber(1);
         if(this.reservationRepo.existsById(reservationKey)) {
             //Ajouter une exception
             throw new AlreadyExistReservation();
@@ -118,6 +118,7 @@ public class ReservationService {
         reserv.setId(reservationKey);
         reserv.setUtilisateur(this.utilisateurRepo.findById(utilisateurId).orElseThrow(UserNotFoundException::new));
         reserv.setTerrain(this.terrainRepo.findById(newId).orElseThrow(TerrainNotFoundException::new));
+        reserv.setNumber(1);
         return reservationRepo.save(reserv);
     }
 

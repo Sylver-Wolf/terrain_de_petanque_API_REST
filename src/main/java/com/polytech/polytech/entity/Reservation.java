@@ -19,6 +19,9 @@ public class Reservation {
     @EmbeddedId
     private ReservationKey id;
 
+    @Column(name="reservation")
+    private Integer number;
+
     @ManyToOne
     @MapsId("utilisateur_id" )
     @JoinColumn(name="utilisateur_id", insertable = false, updatable = false)

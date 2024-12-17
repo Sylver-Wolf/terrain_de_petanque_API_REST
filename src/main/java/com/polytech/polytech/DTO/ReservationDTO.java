@@ -16,6 +16,7 @@ import java.util.Date;
 public class ReservationDTO {
 
     private ReservationKey id;
+    private Integer number;
 
     private Utilisateur Utilisateur;
 
